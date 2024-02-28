@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema 
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id       String @id @default(uuid()) 
+  email    String @unique
+  password String
+  role   String?
+  refreshToken String?
+  profile  Profile?
+  orders  OnlineOrder[]
+  cashOnOrders CashOnOrder[]
+  addTorCart   addToCart[]
+}
+model Profile{
+   id        String      @id  @default(uuid())
+   firstName String
+   lastName String
+   imageUrl String
+   number   Int
+   address String
+   UserID    String @unique
+   user     User @relation(fields: [UserID], references: [id])
+
+}
+model Product  {
+  id        String      @id  @default(uuid())
+  name      String   
+  price     Int
+  imageUrl  String
+  content   String?
+  
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  @@map("Products")
+  
+}
+
+model Category {
+  id       String      @id  @default(uuid())
+  name     String
+  
+}
+
+
+model OnlineOrder{
+ id        String      @id  @default(uuid())
+ productID String
+ productName      String   
+  productpPrice     Int
+  productImageUrl  String
+  productContent   String?
+  kg               Int
+  paymentMethod  String
+  paymentNumber Int
+  payTrxID   String
+  userNumber Int
+  userAddress String
+  userName   String  
+  orderStatus  String
+  totalAmount  Int
+  UserID    String
+  user     User @relation(fields: [UserID], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+   @@map("OnlineOrders")
+}
+model CashOnOrder{
+  id        String      @id  @default(uuid())
+  productID String
+  productName      String   
+  productpPrice     Int
+  productImageUrl  String
+  productContent   String?
+  kg               Int
+  paymentMethod  String
+  userNumber Int
+  userAddress String
+  userName   String  
+  orderStatus  String
+  totalAmount  Int
+  UserID    String
+  user     User @relation(fields: [UserID], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+   
+}
+
+model addToCart{
+  id        String      @id  @default(uuid())
+  name      String   
+  price     Int
+  imageUrl  String
+  content   String?
+  
+  UserID    String
+  user      User @relation(fields: [UserID], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
