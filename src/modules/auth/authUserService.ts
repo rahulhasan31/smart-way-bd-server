@@ -1,6 +1,4 @@
-// src/services/AuthService.ts
 
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PrismaClient, User  } from '@prisma/client';
 
@@ -19,10 +17,6 @@ export async function generateTokens(user: { id: string; email: string }): Promi
   return { accessToken, refreshToken };
 }
 
-export async function hashPassword(password: string): Promise<string> {
-  const saltRounds = 10;
-  return bcrypt.hash(password, saltRounds);
-}
 
 export async function verifyToken(token: string): Promise<{ id: string; email: string }> {
   return new Promise((resolve, reject) => {

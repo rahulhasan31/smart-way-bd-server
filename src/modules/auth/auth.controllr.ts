@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { getUserByEmail, AuthService } from "./auth.service";
-import {  generateTokens, hashPassword, refreshAccessToken } from "./authUserService";
+import {  generateTokens, refreshAccessToken } from "./authUserService";
 
 
 
@@ -33,7 +33,7 @@ export async function registerUser(req: Request, res: Response) {
       return res.status(400).json({ message: 'Email is already in use' });
     }
   
-    const hashedPassword= await hashPassword(password);
+    
   
     const user = await AuthService.createUserDB(req.body);
     const accessToken  = await generateTokens(user);
