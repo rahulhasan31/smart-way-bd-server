@@ -5,6 +5,7 @@ import { ProductRoutes } from "./modules/product/product.route"
 import { AuthRoutes } from "./modules/auth/auth.route"
 import { UserRoutes } from "./modules/user/userRoutes"
 import { OnlineOrderRoutes } from "./modules/OnlineOrder/onlineOrder.Routes"
+import { AddToCartRoutes } from "./modules/addTocart/addtocart.route"
 
 
 
@@ -21,5 +22,6 @@ app.use('/api/v1', ProductRoutes)
 app.use('/api/v1', AuthRoutes)
 app.use('/api/v1', UserRoutes)
 app.use('/api/v1', OnlineOrderRoutes)
+app.use('/api/v1', AddToCartRoutes)
 
 export default app;
