@@ -9,9 +9,17 @@ const insertIntoDB = async (data:addToCart) => {
     // Check if the item already exists in the user's cart
     const existingCartItem = await prisma.addToCart.findFirst({
       where: {
-        productID:data.productID
+       AND:[
+        {
+          productID:data.productID
+        },
+        {
+          UserID:data.UserID
+        }
+       ]
       }
     });
+console.log('existingCartItem',existingCartItem );
 
     if (existingCartItem) {
       // If the item already exists, update kg and price
@@ -48,8 +56,15 @@ const decrementAddTCart = async (data:addToCart) => {
     // Check if the item already exists in the user's cart
     const existingCartItem = await prisma.addToCart.findFirst({
       where: {
-        productID:data.productID
-      }
+        AND:[
+         {
+           productID:data.productID
+         },
+         {
+           UserID:data.UserID
+         }
+        ]
+       }
     });
 
     if (existingCartItem && existingCartItem.kg > 1) {
@@ -90,10 +105,21 @@ const decrementAddTCart = async (data:addToCart) => {
 
 
 
-
+const GetSingleCart= async(id:string)=>{
+  const result= await prisma.addToCart.findUnique({
+   where:{
+      id:id
+   },
+   
+  })
+  return result
+}
 
 const getUserAddToCart=async(data:string)=>{
   const result= await prisma.addToCart.findMany({
+    orderBy:{
+      kg:"desc"
+    },
     include:{
      user:true
     },
@@ -113,6 +139,18 @@ const deleteAddtoCart =async(id:string)=>{
   })
   return result
 }
+const AddtoCartPriceAggregate =async(id:string)=>{
+  const result= await prisma.addToCart.aggregate({
+    where:{
+   UserID:id
+    },
+    _sum:{
+      price:true
+    }
+  })
+
+  return result
+}
 
 
 
@@ -127,6 +165,8 @@ export const AddToCartService={
     insertIntoDB,
     decrementAddTCart,
     getUserAddToCart,
-    deleteAddtoCart
+    deleteAddtoCart,
+    GetSingleCart,
+    AddtoCartPriceAggregate
 
 }

@@ -72,11 +72,48 @@ const deleteAddtoCart=async(req:Request, res:Response, next:NextFunction)=>{
      next(err)
     }
  }
+const GetSingleCart=async(req:Request, res:Response, next:NextFunction)=>{
+    try{
+        const id=req.params.id
+        console.log(id);
+        
+     const result= await AddToCartService.GetSingleCart(id)
+     res.send({
+         sucess:true,
+         status:200,
+         message:"Single Data SucessFully",
+         data:result
+     })
+ 
+    }
+    catch(err){
+     next(err)
+    }
+ }
+const AddtoCartPriceAggregate=async(req:Request, res:Response, next:NextFunction)=>{
+    try{
+        
+        const id=req.params.id
+     const result= await AddToCartService.AddtoCartPriceAggregate(id)
+     res.send({
+         sucess:true,
+         status:200,
+         message:"Aggregate Data SucessFully",
+         data:result
+     })
+ 
+    }
+    catch(err){
+     next(err)
+    }
+ }
  
 
 export  const  AddToCartController={
     insertIntoDB,
     getUserAddToCart,
     decrementAddTCart,
-    deleteAddtoCart
+    deleteAddtoCart,
+    GetSingleCart,
+    AddtoCartPriceAggregate
 }
